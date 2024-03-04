@@ -53,3 +53,37 @@ books = [
         'timestamp': datetime.datetime.now()
     },
 ] 
+
+def connect():
+    conn = sqlite3.connect('books.db')
+    cur = conn.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY, available BOOLEAN, title TEXT, timestamp TEXT)")
+    conn.commit()
+    conn.close()
+    for i in books:
+        bk = Book(getNewId(), i['available'], i['title'], i['timestamp'])
+        insert(bk)
+
+def insert(bk):
+    conn = sqlite3.connect('books.db')
+    cur = conn.cursor()
+    cur.execute("INSERT INTO books VALUES (?,?,?,?)", (
+        book.id,
+        book.available,
+        book.title,
+        book.timestamp
+    ))
+    conn.commit()
+    conn.close()
+    
+def view():
+    conn = sqlite3.connect('books.db')
+    cur  = conn.cursor()
+    cur.execute("SELECT * FROM books")
+    rows = cur.fetchall()
+    books = []
+    for i in rows:
+        book = Book(i[0], True if i[1] == 1 else False, i[2], i[3])
+        books.append(book)
+    conn.close()
+    return books
