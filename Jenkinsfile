@@ -1,10 +1,22 @@
 pipeline {
     agent any
+    
     stages {
-        stage('build') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Install dependencies') {
             steps {
                 sh 'pip install -r requirements.txt'
-                sh 'python app.py'
+            }
+        }
+        
+        stage('Run Flask app') {
+            steps {
+                sh 'python3 app.py'
             }
         }
     }
