@@ -1,0 +1,20 @@
+apiVersion apps/v1
+kind: Deployment
+metadata:
+  name: flask-crud
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: flask-crud
+  template:
+    metadata:
+      labels:
+        app: flask-crud
+    spec:
+      containers:
+        - image: docker.io/salamanteri/flask-crud:latest
+        name: flask-crud
+        ports:
+        - containerPort: 80:
