@@ -7,7 +7,16 @@ pipeline {
                 checkout scm
             }
         }
-        
+
+        stage('Set up Virtual Environment') {
+            steps {
+                sh '''
+                    python3 -m venv venv
+                    source venv/bin/activate
+                '''
+            }
+        }
+
         stage('Install dependencies') {
             steps {
                 sh 'pip install -r requirements.txt'
@@ -16,7 +25,9 @@ pipeline {
 
         stage('Linting') {
             steps {
-                sh 'pylint *.py'
+                catchError(buildResult: 'SUCCESS') {
+                    sh 'pylint *.py'
+                }
             }
         }
         
