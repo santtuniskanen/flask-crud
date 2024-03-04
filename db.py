@@ -64,7 +64,7 @@ def connect():
         bk = Book(getNewId(), i['available'], i['title'], i['timestamp'])
         insert(bk)
 
-def insert(bk):
+def insert(book):
     conn = sqlite3.connect('books.db')
     cur = conn.cursor()
     cur.execute("INSERT INTO books VALUES (?,?,?,?)", (
@@ -87,3 +87,18 @@ def view():
         books.append(book)
     conn.close()
     return books
+
+def update(book):
+    conn = sqlite3.connect('books.db')
+    cur = conn.cursor()
+    cur.execute("UPDATE books SET available=?, title=?, WHERE id=?" (book.available, book.title, book.id))
+    conn.commit()
+    conn.close()
+    
+def deleteAll():
+    conn = sqlite3.connect('books.db')
+    cur = conn.cursor()
+    cur.execute("DELETE FROM books")
+    conn.commit()
+    conn.close()
+    

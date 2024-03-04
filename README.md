@@ -1,3 +1,3 @@
 # flask-crud
-Python Flask Application
+A basic Python Flask application with the goal of learning Jenkins, Argo CD and Kubernetes.
 
