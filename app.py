@@ -56,7 +56,7 @@ def post_request():
                 'status': '404'
             })
 
-    bk = Book(db.getNewId(), True, title, datetime.datetime.now())
+    bk = Book(db.get_new_id(), True, title, datetime.datetime.now())
     print('new book', bk.serialize())
     db.insert(bk)
     new_bks = [b.serialize() for b in db.view()]
@@ -97,8 +97,9 @@ def get_request():
                 'no_of_books': len(bks)
             })
 
-@app.route('/request/<id>', methods=['GET'])
-def get_request_id(id):
+@app.route('/request/<request_id>', methods=['GET'])
+def get_request_id(request_id):
+    # pylint: disable=unused-argument
     """
     get_request_id() returns a singular item from the books table given the correct id.
     """
@@ -106,14 +107,14 @@ def get_request_id(id):
     bks = [b.serialize() for b in db.view()]
     if req_args:
         for b in bks:
-            if b['id'] == int(req_args['id']):
+            if b['id'] == int(req_args['request_id']):
                 return jsonify({
                     'res': b,
                     'status': '200',
                     'msg': 'Success getting book by ID!'
                 })
         return jsonify({
-            'error': f"Error! Book with id '{req_args['id']}' was not found!",
+            'error': f"Error! Book with id '{req_args['request_id']}' was not found!",
             'res': '',
             'status': '404'
         })
@@ -156,8 +157,9 @@ def put_request():
                 'status': '404'
             })
 
-@app.route('/request/<id>', methods=['DELETE'])
-def delete_request(id):
+@app.route('/request/<request_id>', methods=['DELETE'])
+def delete_request(request_id):
+    # pylint: disable=unused-argument
     """
     delete_request()
     """
@@ -167,7 +169,7 @@ def delete_request(id):
     print('bks: ', bks)
     if req_args:
         for b in bks:
-            if b['id'] == int(req_args['id']):
+            if b['id'] == int(req_args['request_id']):
                 db.delete(b['id'])
                 updated_bks = [b.serialize() for b in db.view()]
                 print('updated_bks: ', updated_bks)
