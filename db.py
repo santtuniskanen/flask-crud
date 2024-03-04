@@ -1,8 +1,17 @@
-import sqlite3, random, datetime
+"""
+db.py handles database connection and the sql methods for crud functions.
+"""
+
+import sqlite3
+import random
+import datetime
 from models import Book
 
 
-def getNewId():
+def get_new_id():
+    """
+    get_new_id() randomly generates an id of type Int, which is 9 digits in long.
+    """
     return random.getrandbits(28)
 
 
@@ -52,19 +61,30 @@ books = [
         'title': 'The Da Vinci Code',
         'timestamp': datetime.datetime.now()
     },
-] 
+]
 
 def connect():
+    """
+    connect() connects to the sqlite database and creates
+    a table "books" if it doesn't exist yet.
+    """
     conn = sqlite3.connect('books.db')
     cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY, available BOOLEAN, title TEXT, timestamp TEXT)")
+    cur.execute("CREATE TABLE IF NOT EXISTS books "
+            "(id INTEGER PRIMARY KEY, "
+            "available BOOLEAN, "
+            "title TEXT, "
+            "timestamp TEXT)")
     conn.commit()
     conn.close()
     for i in books:
-        bk = Book(getNewId(), i['available'], i['title'], i['timestamp'])
+        bk = Book(get_new_id(), i['available'], i['title'], i['timestamp'])
         insert(bk)
 
 def insert(book):
+    """
+    insert(book) inserts a book into the table given correct params.
+    """
     conn = sqlite3.connect('books.db')
     cur = conn.cursor()
     cur.execute("INSERT INTO books VALUES (?,?,?,?)", (
@@ -75,34 +95,50 @@ def insert(book):
     ))
     conn.commit()
     conn.close()
-    
+
 def view():
+    """
+    view() returns all books from the table.
+    """
     conn = sqlite3.connect('books.db')
     cur  = conn.cursor()
     cur.execute("SELECT * FROM books")
     rows = cur.fetchall()
-    books = []
+    book_list = []
     for i in rows:
-        book = Book(i[0], True if i[1] == 1 else False, i[2], i[3])
-        books.append(book)
+        book = Book(i[0], i[1] == 1, i[2], i[3])
+        book_list.append(book)
     conn.close()
-    return books
+    return book_list
 
 def update(book):
+    """
+    Updates a book in the table given correct params.
+    """
     conn = sqlite3.connect('books.db')
     cur = conn.cursor()
-    cur.execute("UPDATE books SET available=?, title=?, WHERE id=?" (book.available, book.title, book.id))
+    cur.execute("UPDATE books "
+            "SET available=?, "
+            "title=? "
+            "WHERE id=?",
+            (book.available, book.title, book.id))
     conn.commit()
     conn.close()
-    
-def delete(theId):
+
+def delete(the_id):
+    """
+    deletes a book from the table given id.
+    """
     conn = sqlite3.connect('books.db')
     cur = conn.cursor()
-    cur.execute("DELETE FROM books WHERE id=?", (theId,))
+    cur.execute("DELETE FROM books WHERE id=?", (the_id,))
     conn.commit()
     conn.close()
-    
-def deleteAll():
+
+def delete_all():
+    """
+    deletes all books from the table.
+    """
     conn = sqlite3.connect('books.db')
     cur = conn.cursor()
     cur.execute("DELETE FROM books")
