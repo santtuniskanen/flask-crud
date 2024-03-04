@@ -16,9 +16,7 @@ pipeline {
 
         stage('Linting') {
             steps {
-                catchError(buildResult: 'SUCCESS') {
-                    sh 'pylint *.py'
-                }
+                sh 'pylint *.py'
             }
         }
         
