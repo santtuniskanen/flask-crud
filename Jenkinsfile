@@ -13,6 +13,12 @@ pipeline {
                 sh 'pip install -r requirements.txt'
             }
         }
+
+        stage('Linting') {
+            steps {
+                sh 'pylint *.py'
+            }
+        }
         
         stage('Run Flask app') {
             steps {
