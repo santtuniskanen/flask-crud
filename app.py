@@ -64,7 +64,7 @@ def getRequest():
                     # 'error': '',
                     'res': b,
                     'status': '200',
-                    'msg': 'Success getting all books in library!👍😀'
+                    'msg': 'Success getting all books in library!'
                 })
         return jsonify({
             'error': f"Error! Book with id '{json['id']}' not found!",
@@ -76,7 +76,7 @@ def getRequest():
                     # 'error': '',
                     'res': bks,
                     'status': '200',
-                    'msg': 'Success getting all books in library!👍😀',
+                    'msg': 'Success getting all books in library!',
                     'no_of_books': len(bks)
                 })
 
