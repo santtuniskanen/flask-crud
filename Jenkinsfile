@@ -20,18 +20,9 @@ pipeline {
             }
         }
         
-        stage('Run Flask app') {
+        stage('Docker Build') {
             steps {
-                sh 'python3 app.py &'
-                sleep 10
-            }
-        }
-
-        stage('Stop Flask app') {
-            steps {
-                script {
-                    sh 'pkill -f "python3 app.py"'
-                }
+                sh 'docker build -t salamanteri/flask-crud:latest .'
             }
         }
     }
