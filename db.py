@@ -88,7 +88,7 @@ def insert(book):
     conn = sqlite3.connect('books.db')
     cur = conn.cursor()
     cur.execute("INSERT INTO books VALUES (?,?,?,?)", (
-        book.id,
+        book.book_id,
         book.available,
         book.title,
         book.timestamp
@@ -121,7 +121,7 @@ def update(book):
             "SET available=?, "
             "title=? "
             "WHERE id=?",
-            (book.available, book.title, book.id))
+            (book.available, book.title, book.book_id))
     conn.commit()
     conn.close()
 
