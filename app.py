@@ -45,7 +45,7 @@ def post_request():
         return jsonify({
             'status': '422',
             'res': 'failure',
-            'error': 'Invalid email format. Please enter a valid email address'
+            'error': 'Invalid email format. Please enter a valid email address!'
         })
     title = req_data['title']
     bks = [b.serialize() for b in db.view()]
